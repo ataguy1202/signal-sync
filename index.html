@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SignalSync — Interview Intelligence Platform</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="gnav">
+  <a class="logo" href="#"><div class="logo-mark">S</div><div class="logo-txt">Signal<span>Sync</span></div></a>
+  <div class="nav-links" id="navLinks">
+    <a class="nav-link" onclick="scrollTo('pain')">Problem</a>
+    <a class="nav-link" onclick="scrollTo('how')">How It Works</a>
+  </div>
+  <div class="nav-right" id="navRight"><button class="nav-cta" onclick="enterApp()">Try the Demo</button></div>
+</nav>
+
+<!-- TOAST + MODAL + TOUR -->
+<div class="toast-container" id="toasts"></div>
+<div class="modal-overlay" id="modalOverlay"><div class="modal" id="modalContent"></div></div>
+<div class="tour-overlay" id="tourOverlay" onclick="endTour()"></div>
+<div class="tour-tip" id="tourTip"></div>
+
+<!-- ═══ LANDING ═══ -->
+<div id="view-landing" class="view active">
+  <section class="hero">
+    <div class="hero-badge"><span class="hero-dot"></span> Interview Intelligence Platform</div>
+    <h1>Stop reading 5 feedback docs.<br><span class="grad">Get the signal in seconds.</span></h1>
+    <p class="hero-sub">SignalSync uses AI to synthesize interviewer feedback into clear, actionable debriefs — surfacing consensus, conflicts, and a hiring recommendation your team can trust.</p>
+    <div class="hero-btns">
+      <button class="h-btn h-btn-p" onclick="enterApp()">See It In Action &rarr;</button>
+      <button class="h-btn h-btn-s" onclick="scrollTo('pain')">Learn More</button>
+    </div>
+  </section>
+
+  <section class="section" id="pain">
+    <div class="sec-label">The Problem</div>
+    <div class="sec-title">Debriefs are the bottleneck nobody talks about</div>
+    <p class="sec-sub">Technical recruiters lose hours every week synthesizing interview feedback manually. Slow, inconsistent, and full of blind spots.</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon r">47m</div>
+        <h3>47 minutes per candidate</h3>
+        <p>That's the average time spent reading interviewer feedback, finding themes, and writing a debrief summary. Per candidate.</p>
+        <div class="pain-stat">18.8 hrs</div>
+        <div class="pain-stat-label">lost per week on a 24-candidate pipeline</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon a">!!</div>
+        <h3>Conflicting signals go unnoticed</h3>
+        <p>When one interviewer says "strong communicator" and another flags "needs prompting," that conflict gets buried in walls of text.</p>
+        <div class="pain-stat">34%</div>
+        <div class="pain-stat-label">of debriefs miss at least one conflict</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon b">3.2x</div>
+        <h3>Inconsistent quality</h3>
+        <p>Some interviewers write paragraphs, others write bullet points. The recruiter normalizes all of this before the hiring committee sees it.</p>
+        <div class="pain-stat">3.2x</div>
+        <div class="pain-stat-label">variance in feedback detail across interviewers</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="sec-label">How SignalSync Works</div>
+    <div class="sec-title">From raw feedback to hiring decision in seconds</div>
+    <p class="sec-sub"></p>
+    <div class="how-steps">
+      <div class="how-step"><div class="how-num">1</div><h3>Feedback flows in</h3><p>Interviewers submit through your existing ATS or directly in SignalSync. Structured rubrics, freeform notes, or both.</p></div>
+      <div class="how-step"><div class="how-num">2</div><h3>AI synthesizes signals</h3><p>Our model reads every word, detects where interviewers agree or disagree, and computes signal strength across core competencies.</p></div>
+      <div class="how-step"><div class="how-num">3</div><h3>Debrief is ready</h3><p>A structured hiring brief with sourced quotes, consensus highlights, and a confidence-weighted recommendation — in seconds.</p></div>
+    </div>
+  </section>
+
+  <section style="padding:0 40px;">
+    <div class="cta-banner">
+      <h2>See it work on real interview data</h2>
+      <p>Walk through a live synthesis — from raw feedback to a hiring committee brief.</p>
+      <button class="h-btn h-btn-p" onclick="enterApp()">Launch Interactive Demo &rarr;</button>
+    </div>
+  </section>
+  <div style="height:40px"></div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="view-app" class="view">
+  <div class="app-shell">
+
+    <!-- SIDEBAR (no emojis — SVG icons) -->
+    <aside class="sidebar">
+      <div class="sb-section">
+        <div class="sb-label">Overview</div>
+        <a class="sb-item active" data-sb="dashboard" onclick="appNav('dashboard')">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span> Dashboard
+        </a>
+        <a class="sb-item" data-sb="analytics" onclick="appNav('analytics')">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span> Analytics
+        </a>
+        <a class="sb-item" data-sb="candidates" onclick="appNav('candidates')">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Candidates
+        </a>
+      </div>
+      <div class="sb-divider"></div>
+      <div class="sb-section">
+        <div class="sb-label">Active Roles</div>
+        <a class="sb-item" data-sb="debrief" onclick="openDebrief()">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span> Sr. Software Eng
+          <span class="sb-badge">3</span>
+        </a>
+        <a class="sb-item" onclick="toast('Staff ML Engineer role — 2 pending debriefs','info')">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span> Staff ML Engineer
+          <span class="sb-badge" style="background:var(--amber-bg);color:var(--amber)">2</span>
+        </a>
+        <a class="sb-item" onclick="toast('Product Designer role — all debriefs complete','success')">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></span> Product Designer
+        </a>
+        <a class="sb-item" onclick="toast('TPM Infra role — 4 pending debriefs','info')">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span> TPM, Infra
+          <span class="sb-badge">4</span>
+        </a>
+      </div>
+      <div class="sb-divider"></div>
+      <div class="sb-section">
+        <div class="sb-label">System</div>
+        <a class="sb-item" data-sb="settings" onclick="appNav('settings')">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span> Settings
+        </a>
+        <a class="sb-item" onclick="openModal('Integrations','Connect SignalSync to your existing ATS, calendar, and communication tools. Supported integrations include Greenhouse, Lever, Ashby, Google Calendar, and Slack.','<button class=\'btn btn-g\' onclick=\'closeModal()\'>Close</button>')">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span> Integrations
+        </a>
+      </div>
+    </aside>
+
+    <div class="main">
+
+      <!-- ═══ DASHBOARD ═══ -->
+      <div id="app-dashboard" class="app-view active">
+        <div class="dash-welcome" style="margin-bottom:24px">
+          <h1 class="dash-h1">Good morning, Sarah</h1>
+          <p class="dash-sub">You have <strong>12 pending debriefs</strong> across 4 roles. Here's your pipeline at a glance.</p>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Pending Debriefs</div><div class="metric-val">12</div><div class="metric-delta down">+3 from last week</div></div>
+          <div class="metric"><div class="metric-label">Synthesized This Week</div><div class="metric-val">28</div><div class="metric-delta up">Saved 4.2 hrs</div></div>
+          <div class="metric"><div class="metric-label">Consensus Rate</div><div class="metric-val">73%</div><div class="metric-delta up">+5% vs last month</div></div>
+          <div class="metric"><div class="metric-label">Time to Decision</div><div class="metric-val">1.8d</div><div class="metric-delta up">0.6d faster</div></div>
+        </div>
+        <div class="card queue-card">
+          <div class="card-head">
+            <h3>Debrief Queue</h3>
+            <div style="display:flex;gap:10px;align-items:center">
+              <div class="tabs">
+                <div class="tab active" onclick="switchTab('pending')">Pending</div>
+                <div class="tab" onclick="switchTab('completed')">Completed</div>
+                <div class="tab" onclick="switchTab('all')">All</div>
+              </div>
+              <button class="btn btn-o btn-sm btn-pill" onclick="addNewRole()">+ New Role</button>
+            </div>
+          </div>
+          <div class="q-row head"><div></div><div>Candidate</div><div>Role</div><div>Interviewers</div><div>Interviewed</div><div>Status</div></div>
+          <div class="q-row" data-id="am" onclick="openDebrief()">
+            <div class="q-av" style="background:linear-gradient(135deg,#667eea,#764ba2)">AM</div>
+            <div><div class="q-name">Aisha Martinez</div><div class="q-role">Final Round</div></div>
+            <div class="q-cell">Sr. Software Eng</div><div class="q-cell">4 / 4 submitted</div><div class="q-cell">Mar 24</div>
+            <div><span class="status ready"><span class="dot"></span>Ready</span></div>
+          </div>
+          <div class="q-row" data-id="kj" onclick="toast('Kevin has 1 pending interviewer — synthesis not available yet','warn')">
+            <div class="q-av" style="background:linear-gradient(135deg,#f093fb,#f5576c)">KJ</div>
+            <div><div class="q-name">Kevin Johansson</div><div class="q-role">Final Round</div></div>
+            <div class="q-cell">Sr. Software Eng</div><div class="q-cell">3 / 4 submitted</div><div class="q-cell">Mar 25</div>
+            <div><span class="status pending"><span class="dot"></span>Waiting</span></div>
+          </div>
+          <div class="q-row" data-id="tp" onclick="toast('Opening Tanya Patel debrief...','info')">
+            <div class="q-av" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">TP</div>
+            <div><div class="q-name">Tanya Patel</div><div class="q-role">Onsite</div></div>
+            <div class="q-cell">Sr. Software Eng</div><div class="q-cell">4 / 4 submitted</div><div class="q-cell">Mar 23</div>
+            <div><span class="status ready"><span class="dot"></span>Ready</span></div>
+          </div>
+          <div class="q-row" data-id="rw" onclick="toast('Rafael phone screen — ready for quick synthesis','info')">
+            <div class="q-av" style="background:linear-gradient(135deg,#a8e063,#56ab2f)">RW</div>
+            <div><div class="q-name">Rafael Whitmore</div><div class="q-role">Phone Screen</div></div>
+            <div class="q-cell">Staff ML Engineer</div><div class="q-cell">2 / 2 submitted</div><div class="q-cell">Mar 26</div>
+            <div><span class="status new-s"><span class="dot"></span>New</span></div>
+          </div>
+          <div class="q-row" data-id="sl" onclick="toast('Simone has 2 pending interviewers','warn')">
+            <div class="q-av" style="background:linear-gradient(135deg,#fbc2eb,#a6c1ee)">SL</div>
+            <div><div class="q-name">Simone Laroche</div><div class="q-role">Final Round</div></div>
+            <div class="q-cell">Product Designer</div><div class="q-cell">3 / 5 submitted</div><div class="q-cell">Mar 22</div>
+            <div><span class="status pending"><span class="dot"></span>Waiting</span></div>
+          </div>
+          <div class="q-row" data-id="completed1" style="display:none">
+            <div class="q-av" style="background:linear-gradient(135deg,#fda085,#f6d365)">MR</div>
+            <div><div class="q-name">Marcus Rodriguez</div><div class="q-role">Final Round</div></div>
+            <div class="q-cell">Staff ML Engineer</div><div class="q-cell">5 / 5 submitted</div><div class="q-cell">Mar 18</div>
+            <div><span class="status done"><span class="dot"></span>Done</span></div>
+          </div>
+          <div class="q-row" data-id="completed2" style="display:none">
+            <div class="q-av" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">EW</div>
+            <div><div class="q-name">Elena Wu</div><div class="q-role">Onsite</div></div>
+            <div class="q-cell">Product Designer</div><div class="q-cell">4 / 4 submitted</div><div class="q-cell">Mar 15</div>
+            <div><span class="status done"><span class="dot"></span>Done</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ DEBRIEF ═══ -->
+      <div id="app-debrief" class="app-view">
+        <div class="deb-back" onclick="appNav('dashboard')"><span class="deb-arrow">&larr;</span><span>Back to Queue</span></div>
+        <div class="cand-banner">
+          <div class="cand-left">
+            <div class="cand-av">AM</div>
+            <div>
+              <div class="cand-name">Aisha Martinez</div>
+              <div class="cand-sub">Senior Software Engineer — AI Platform</div>
+              <div class="cand-tags"><span class="cand-tag">Final Round</span><span class="cand-tag">4 Interviewers</span><span class="cand-tag">Mar 24, 2026</span></div>
+            </div>
+          </div>
+          <div class="cand-right">
+            <button class="btn btn-o btn-pill btn-sm" id="synthBtn" onclick="runSynthesis()">Synthesize Feedback</button>
+            <button class="btn btn-p btn-pill btn-sm" id="exportBtn" style="display:none" onclick="exportBrief()">Export Brief</button>
+          </div>
+        </div>
+        <div class="pipeline">
+          <div class="pipe done"><div class="pipe-dot">&#10003;</div> Application</div>
+          <div class="pipe done"><div class="pipe-dot">&#10003;</div> Phone Screen</div>
+          <div class="pipe done"><div class="pipe-dot">&#10003;</div> Onsite Loop</div>
+          <div class="pipe done"><div class="pipe-dot">&#10003;</div> Feedback (4/4)</div>
+          <div class="pipe active"><div class="pipe-dot">5</div> AI Debrief</div>
+          <div class="pipe"><div class="pipe-dot">6</div> Committee</div>
+        </div>
+        <div class="deb-grid">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div class="card"><div class="card-head"><h3>AI Synthesis</h3><span class="ai-chip">SignalSync AI</span></div>
+              <div class="card-body" id="synthBody">
+                <div class="synth-ph">
+                  <div class="icon-lg">S</div>
+                  <h4>Ready to synthesize</h4>
+                  <p>All 4 interviewers have submitted feedback. Click "Synthesize Feedback" to generate an AI-powered debrief with consensus analysis and hiring recommendation.</p>
+                  <button class="btn btn-p btn-pill" onclick="runSynthesis()">Synthesize Now</button>
+                </div>
+              </div>
+            </div>
+            <div class="card" id="consCard" style="display:none"><div class="card-head"><h3>Consensus &amp; Conflicts</h3><span class="ai-chip">Auto-Detected</span></div>
+              <div class="card-body">
+                <div class="cons-item"><div class="cons-type agree">Full Consensus — 4/4</div><div class="cons-text"><strong>Exceptional system design skills.</strong> All interviewers highlighted her approach to distributed systems tradeoffs and capacity planning as notably above the bar.</div><div class="cons-voters"><div class="cons-v" style="background:#667eea">JC</div><div class="cons-v" style="background:#e06030">RP</div><div class="cons-v" style="background:#057642">LK</div><div class="cons-v" style="background:#764ba2">DW</div></div></div>
+                <div class="cons-item"><div class="cons-type agree">Strong Agreement — 4/4</div><div class="cons-text"><strong>Proactive communicator.</strong> Explains tradeoffs without prompting, asks clarifying questions before diving in, genuine curiosity during reverse-interview segments.</div><div class="cons-voters"><div class="cons-v" style="background:#667eea">JC</div><div class="cons-v" style="background:#e06030">RP</div><div class="cons-v" style="background:#057642">LK</div><div class="cons-v" style="background:#764ba2">DW</div></div></div>
+                <div class="cons-item"><div class="cons-type split">Split Signal — 2 of 4</div><div class="cons-text"><strong>Coding speed under pressure.</strong> Rachel noted ~10 min planning before coding, compressing implementation time. James saw no pacing issues. Assessment: <em>deliberate planning style</em>, not a gap — code quality rated among highest this quarter.</div><div class="cons-voters"><div class="cons-v" style="background:#e06030">RP</div><div class="cons-v" style="background:#667eea">JC</div></div></div>
+                <div class="cons-item"><div class="cons-type agree">Agreement — 3/4</div><div class="cons-text"><strong>Unusually strong reverse-interview questions.</strong> Multiple interviewers noted insightful questions about team decision-making, eng culture, and product roadmap.</div><div class="cons-voters"><div class="cons-v" style="background:#667eea">JC</div><div class="cons-v" style="background:#764ba2">DW</div><div class="cons-v" style="background:#057642">LK</div></div></div>
+              </div>
+            </div>
+            <div id="recCard" style="display:none">
+              <div class="rec-box">
+                <div class="rec-label">AI Recommendation</div>
+                <div class="rec-verdict">Strong Hire <span class="rec-conf">87% confidence</span></div>
+                <div class="rec-text">Based on synthesis of 4 interviewer signals, Aisha demonstrates senior-level system design and communication skills with strong cultural alignment. The split signal on coding speed reflects a deliberate planning approach — consistent with senior engineers who optimize for correctness. Comparable to top 10% of candidates this quarter.</div>
+                <div class="rec-time">This synthesis took <strong>&nbsp;8 seconds</strong>. &nbsp;Manual debrief average: <strong>&nbsp;47 minutes</strong>.</div>
+                <div class="rec-actions">
+                  <button class="btn btn-p btn-pill" onclick="sendToHM()">Send to Hiring Manager</button>
+                  <button class="btn btn-o btn-pill" onclick="scheduleCommittee()">Schedule Committee Review</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div class="card"><div class="card-head"><h3>Signal Strength</h3><span style="font-size:11px;color:var(--text3)">Aggregated from 4 reviews</span></div>
+              <div class="card-body">
+                <div class="sig-item"><div class="sig-top"><span class="sig-name">System Design</span><span class="sig-val" id="sv1">—</span></div><div class="sig-track"><div class="sig-fill high" id="sf1"></div></div></div>
+                <div class="sig-item"><div class="sig-top"><span class="sig-name">Coding Ability</span><span class="sig-val" id="sv2">—</span></div><div class="sig-track"><div class="sig-fill high" id="sf2"></div></div></div>
+                <div class="sig-item"><div class="sig-top"><span class="sig-name">Communication</span><span class="sig-val" id="sv3">—</span></div><div class="sig-track"><div class="sig-fill high" id="sf3"></div></div></div>
+                <div class="sig-item"><div class="sig-top"><span class="sig-name">Technical Leadership</span><span class="sig-val" id="sv4">—</span></div><div class="sig-track"><div class="sig-fill high" id="sf4"></div></div></div>
+                <div class="sig-item"><div class="sig-top"><span class="sig-name">Culture Alignment</span><span class="sig-val" id="sv5">—</span></div><div class="sig-track"><div class="sig-fill high" id="sf5"></div></div></div>
+                <div class="sig-item"><div class="sig-top"><span class="sig-name">Execution Speed</span><span class="sig-val" id="sv6">—</span></div><div class="sig-track"><div class="sig-fill med" id="sf6"></div></div></div>
+              </div>
+            </div>
+            <div class="card"><div class="card-head"><h3>Interviewer Feedback</h3><span style="font-size:11px;color:var(--text3)">4 of 4 submitted</span></div>
+              <div class="card-body" style="padding:14px">
+                <div class="int-card" onclick="toggleInt(this)"><div class="int-top"><div class="int-info"><div class="int-av" style="background:#667eea">JC</div><div><div class="int-name">James Chen</div><div class="int-role">Staff Eng · System Design</div></div></div><span class="int-verdict v-sh">Strong Hire</span></div><div class="int-hint">View feedback</div><div class="int-body"><div class="int-fb">"One of the strongest system design interviews I've conducted this quarter. She immediately identified the key scalability bottleneck in the notification system problem and proposed an event-driven architecture with clear reasoning. Her capacity estimation was spot-on and she proactively discussed failure modes. Would love to work with her."</div></div></div>
+                <div class="int-card" onclick="toggleInt(this)"><div class="int-top"><div class="int-info"><div class="int-av" style="background:#e06030">RP</div><div><div class="int-name">Rachel Park</div><div class="int-role">Senior Eng · Coding</div></div></div><span class="int-verdict v-h">Hire</span></div><div class="int-hint">View feedback</div><div class="int-body"><div class="int-fb">"Solid coding round. She took about 10 minutes to plan her approach before writing any code, which initially concerned me, but once she started coding, the solution was clean and nearly bug-free on first pass. She caught her own edge case before I pointed it out. Slightly slower but higher quality output."</div></div></div>
+                <div class="int-card" onclick="toggleInt(this)"><div class="int-top"><div class="int-info"><div class="int-av" style="background:#057642">LK</div><div><div class="int-name">Lisa Kumar</div><div class="int-role">Eng Manager · Behavioral</div></div></div><span class="int-verdict v-sh">Strong Hire</span></div><div class="int-hint">View feedback</div><div class="int-body"><div class="int-fb">"Aisha gave one of the most thoughtful behavioral interviews I've seen. When discussing a conflict with a PM, she showed genuine self-awareness. Her description of leading a cross-team migration demonstrated senior-level scope and influence. Excellent reverse-interview questions about our decision-making process."</div></div></div>
+                <div class="int-card" onclick="toggleInt(this)"><div class="int-top"><div class="int-info"><div class="int-av" style="background:#764ba2">DW</div><div><div class="int-name">Derek Williams</div><div class="int-role">Principal Eng · Deep Dive</div></div></div><span class="int-verdict v-lh">Leaning Hire</span></div><div class="int-hint">View feedback</div><div class="int-body"><div class="int-fb">"Good deep dive into her real-time analytics pipeline work. She articulates tradeoffs well. I pushed her on Kafka vs Pulsar and she gave a nuanced answer about operational maturity. Less fluid on ML pipeline integration — not a dealbreaker, it's learnable. Leaning hire — she has the fundamentals and the judgment."</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ ANALYTICS ═══ -->
+      <div id="app-analytics" class="app-view">
+        <div style="margin-bottom:24px"><h1 class="dash-h1">Analytics</h1><p class="dash-sub">Pipeline performance and synthesis insights across all roles.</p></div>
+        <div class="chart-row">
+          <div class="card"><div class="card-head"><h3>Debriefs Per Week</h3></div><div class="card-body">
+            <div class="chart-bar-container">
+              <div class="chart-bar" data-h="45" style="height:0"><div class="chart-bar-val">12</div><div class="chart-bar-label">W1</div></div>
+              <div class="chart-bar" data-h="62" style="height:0"><div class="chart-bar-val">18</div><div class="chart-bar-label">W2</div></div>
+              <div class="chart-bar" data-h="55" style="height:0"><div class="chart-bar-val">15</div><div class="chart-bar-label">W3</div></div>
+              <div class="chart-bar" data-h="78" style="height:0"><div class="chart-bar-val">22</div><div class="chart-bar-label">W4</div></div>
+              <div class="chart-bar" data-h="90" style="height:0"><div class="chart-bar-val">28</div><div class="chart-bar-label">W5</div></div>
+              <div class="chart-bar" data-h="95" style="height:0"><div class="chart-bar-val">31</div><div class="chart-bar-label">W6</div></div>
+            </div>
+          </div></div>
+          <div class="card"><div class="card-head"><h3>Time Saved (hours)</h3></div><div class="card-body">
+            <div class="chart-bar-container">
+              <div class="chart-bar" data-h="35" style="height:0;background:linear-gradient(180deg,var(--green),#045a34)"><div class="chart-bar-val">2.1</div><div class="chart-bar-label">W1</div></div>
+              <div class="chart-bar" data-h="50" style="height:0;background:linear-gradient(180deg,var(--green),#045a34)"><div class="chart-bar-val">3.0</div><div class="chart-bar-label">W2</div></div>
+              <div class="chart-bar" data-h="45" style="height:0;background:linear-gradient(180deg,var(--green),#045a34)"><div class="chart-bar-val">2.7</div><div class="chart-bar-label">W3</div></div>
+              <div class="chart-bar" data-h="65" style="height:0;background:linear-gradient(180deg,var(--green),#045a34)"><div class="chart-bar-val">3.8</div><div class="chart-bar-label">W4</div></div>
+              <div class="chart-bar" data-h="80" style="height:0;background:linear-gradient(180deg,var(--green),#045a34)"><div class="chart-bar-val">4.2</div><div class="chart-bar-label">W5</div></div>
+              <div class="chart-bar" data-h="92" style="height:0;background:linear-gradient(180deg,var(--green),#045a34)"><div class="chart-bar-val">5.1</div><div class="chart-bar-label">W6</div></div>
+            </div>
+          </div></div>
+        </div>
+        <div class="chart-row">
+          <div class="card"><div class="card-head"><h3>Consensus Rate by Role</h3></div><div class="card-body">
+            <div class="sig-item"><div class="sig-top"><span class="sig-name">Sr. Software Eng</span><span class="sig-val">73%</span></div><div class="sig-track"><div class="sig-fill high" style="width:73%"></div></div></div>
+            <div class="sig-item"><div class="sig-top"><span class="sig-name">Staff ML Engineer</span><span class="sig-val">68%</span></div><div class="sig-track"><div class="sig-fill med" style="width:68%"></div></div></div>
+            <div class="sig-item"><div class="sig-top"><span class="sig-name">Product Designer</span><span class="sig-val">82%</span></div><div class="sig-track"><div class="sig-fill high" style="width:82%"></div></div></div>
+            <div class="sig-item"><div class="sig-top"><span class="sig-name">TPM, Infra</span><span class="sig-val">61%</span></div><div class="sig-track"><div class="sig-fill med" style="width:61%"></div></div></div>
+          </div></div>
+          <div class="card"><div class="card-head"><h3>Key Metrics</h3></div><div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="metric" style="border:none;padding:12px"><div class="metric-label">Total Synthesized</div><div class="metric-val" style="font-size:28px">126</div><div class="metric-delta up">this quarter</div></div>
+              <div class="metric" style="border:none;padding:12px"><div class="metric-label">Avg Confidence</div><div class="metric-val" style="font-size:28px">81%</div><div class="metric-delta up">+4% vs Q3</div></div>
+              <div class="metric" style="border:none;padding:12px"><div class="metric-label">Conflicts Surfaced</div><div class="metric-val" style="font-size:28px">43</div><div class="metric-delta up">would have been missed</div></div>
+              <div class="metric" style="border:none;padding:12px"><div class="metric-label">Hours Saved</div><div class="metric-val" style="font-size:28px">98.7</div><div class="metric-delta up">this quarter</div></div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- ═══ CANDIDATES ═══ -->
+      <div id="app-candidates" class="app-view">
+        <div style="margin-bottom:24px;display:flex;justify-content:space-between;align-items:center">
+          <div><h1 class="dash-h1">Candidates</h1><p class="dash-sub">All candidates across active roles.</p></div>
+          <button class="btn btn-p btn-pill" onclick="toast('Candidate import coming soon','info')">Import Candidates</button>
+        </div>
+        <div class="card">
+          <div class="q-row head"><div></div><div>Candidate</div><div>Role</div><div>Stage</div><div>Signal</div><div>Status</div></div>
+          <div class="q-row" onclick="openDebrief()">
+            <div class="q-av" style="background:linear-gradient(135deg,#667eea,#764ba2)">AM</div>
+            <div><div class="q-name">Aisha Martinez</div><div class="q-role">aisha.m@email.com</div></div>
+            <div class="q-cell">Sr. Software Eng</div><div class="q-cell">Final Round</div><div class="q-cell">9.2 / 10</div>
+            <div><span class="status ready"><span class="dot"></span>Ready</span></div>
+          </div>
+          <div class="q-row" onclick="toast('Opening Kevin Johansson...','info')">
+            <div class="q-av" style="background:linear-gradient(135deg,#f093fb,#f5576c)">KJ</div>
+            <div><div class="q-name">Kevin Johansson</div><div class="q-role">k.johansson@email.com</div></div>
+            <div class="q-cell">Sr. Software Eng</div><div class="q-cell">Final Round</div><div class="q-cell">— / 10</div>
+            <div><span class="status pending"><span class="dot"></span>Waiting</span></div>
+          </div>
+          <div class="q-row" onclick="toast('Opening Tanya Patel...','info')">
+            <div class="q-av" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">TP</div>
+            <div><div class="q-name">Tanya Patel</div><div class="q-role">tanya.p@email.com</div></div>
+            <div class="q-cell">Sr. Software Eng</div><div class="q-cell">Onsite</div><div class="q-cell">7.8 / 10</div>
+            <div><span class="status ready"><span class="dot"></span>Ready</span></div>
+          </div>
+          <div class="q-row" onclick="toast('Opening Rafael Whitmore...','info')">
+            <div class="q-av" style="background:linear-gradient(135deg,#a8e063,#56ab2f)">RW</div>
+            <div><div class="q-name">Rafael Whitmore</div><div class="q-role">r.whitmore@email.com</div></div>
+            <div class="q-cell">Staff ML Engineer</div><div class="q-cell">Phone Screen</div><div class="q-cell">6.5 / 10</div>
+            <div><span class="status new-s"><span class="dot"></span>New</span></div>
+          </div>
+          <div class="q-row" onclick="toast('Opening Simone Laroche...','info')">
+            <div class="q-av" style="background:linear-gradient(135deg,#fbc2eb,#a6c1ee)">SL</div>
+            <div><div class="q-name">Simone Laroche</div><div class="q-role">s.laroche@email.com</div></div>
+            <div class="q-cell">Product Designer</div><div class="q-cell">Final Round</div><div class="q-cell">— / 10</div>
+            <div><span class="status pending"><span class="dot"></span>Waiting</span></div>
+          </div>
+          <div class="q-row" onclick="toast('Opening Marcus Rodriguez...','info')">
+            <div class="q-av" style="background:linear-gradient(135deg,#fda085,#f6d365)">MR</div>
+            <div><div class="q-name">Marcus Rodriguez</div><div class="q-role">m.rodriguez@email.com</div></div>
+            <div class="q-cell">Staff ML Engineer</div><div class="q-cell">Final Round</div><div class="q-cell">8.1 / 10</div>
+            <div><span class="status done"><span class="dot"></span>Done</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ SETTINGS ═══ -->
+      <div id="app-settings" class="app-view">
+        <div style="margin-bottom:24px"><h1 class="dash-h1">Settings</h1><p class="dash-sub">Configure your SignalSync workspace.</p></div>
+        <div class="card" style="max-width:680px">
+          <div class="card-body">
+            <div class="setting-group">
+              <h4>Synthesis Preferences</h4>
+              <div class="setting-row"><div><div class="setting-label">Auto-synthesize when all feedback is in</div><div class="setting-desc">Automatically run AI synthesis when all interviewers submit</div></div><div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-knob"></div></div></div>
+              <div class="setting-row"><div><div class="setting-label">Include risk assessment</div><div class="setting-desc">Add a risk analysis section to the hiring brief</div></div><div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-knob"></div></div></div>
+              <div class="setting-row"><div><div class="setting-label">Confidence threshold alerts</div><div class="setting-desc">Notify when confidence drops below 60%</div></div><div class="toggle" onclick="toggleSetting(this)"><div class="toggle-knob"></div></div></div>
+            </div>
+            <div class="setting-group">
+              <h4>Notifications</h4>
+              <div class="setting-row"><div><div class="setting-label">Email notifications</div><div class="setting-desc">Get notified when feedback is submitted or synthesis completes</div></div><div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-knob"></div></div></div>
+              <div class="setting-row"><div><div class="setting-label">Slack integration</div><div class="setting-desc">Post synthesis summaries to your hiring channel</div></div><div class="toggle" onclick="toggleSetting(this)"><div class="toggle-knob"></div></div></div>
+            </div>
+            <div class="setting-group">
+              <h4>Data & Privacy</h4>
+              <div class="setting-row"><div><div class="setting-label">Anonymize candidate data in analytics</div><div class="setting-desc">Redact names from aggregate reports</div></div><div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-knob"></div></div></div>
+              <div class="setting-row"><div><div class="setting-label">Audit logging</div><div class="setting-desc">Log all synthesis actions for compliance review</div></div><div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-knob"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
